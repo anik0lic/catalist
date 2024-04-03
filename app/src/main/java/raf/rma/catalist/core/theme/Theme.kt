@@ -1,4 +1,4 @@
-package raf.rma.catalist.ui.theme
+package raf.rma.catalist.core.theme
 
 import android.app.Activity
 import android.os.Build
