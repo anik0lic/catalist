@@ -10,7 +10,6 @@ import raf.rma.catalist.breeds.list.breedsListScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation(){
-
     val navController = rememberNavController()
 
     NavHost(
