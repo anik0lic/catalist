@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import raf.rma.catalist.breeds.api.model.BreedsApiModel
-import raf.rma.catalist.breeds.domain.BreedsUiModel
+import raf.rma.catalist.breeds.model.BreedsUiModel
 import raf.rma.catalist.breeds.repository.BreedRepository
 import java.io.IOException
 
@@ -56,5 +56,15 @@ class BreedsListViewModel (
         id = this.id,
         name = this.name,
         description = this.description,
+        alternativeName = this.alternativeName,
+        adaptability = this.adaptability,
+        affectionLevel = this.affectionLevel,
+        imageUrl = this.image.url,
+        lifeSpan = this.lifeSpan,
+        origin = this.origin,
+        rare = this.rare,
+        temperament = this.temperament,
+        weight = this.weight.metric,
+        wikipediaURL = this.wikipediaURL
     )
 }

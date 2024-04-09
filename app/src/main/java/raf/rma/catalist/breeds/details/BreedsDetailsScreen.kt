@@ -6,15 +6,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.Surface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -29,8 +29,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import raf.rma.catalist.breeds.domain.BreedsData
-import raf.rma.catalist.breeds.domain.BreedsUiModel
+import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import raf.rma.catalist.breeds.model.BreedsUiModel
 import raf.rma.catalist.core.compose.AppIconButton
 import raf.rma.catalist.core.compose.NoDataContent
 
@@ -131,10 +132,18 @@ private fun BreedsDataColumn(
     Column {
         Spacer(modifier = Modifier.height(16.dp))
 
+//        SubcomposeAsyncImage(
+//            modifier = Modifier.size(100.dp),
+//            model = data.imageUrl,
+//            contentDescription = null,
+//        )
+
+        AsyncImage(modifier = Modifier.size(200.dp), model = data.imageUrl, contentDescription = null)
+
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.headlineSmall,
-            text = data.name,
+            text = data.description,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -142,26 +151,67 @@ private fun BreedsDataColumn(
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.bodyLarge,
-            text = data.name,
+            text = data.origin,
+        )
+
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.bodyLarge,
+            text = data.temperament,
+        )
+
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.bodyLarge,
+            text = data.lifeSpan,
+        )
+
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.bodyLarge,
+            text = data.weight,
+        )
+
+//        Text(
+//            modifier = Modifier.padding(horizontal = 16.dp),
+//            style = MaterialTheme.typography.bodyLarge,
+//            text = data.rare,
+//        )
+
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            style = MaterialTheme.typography.bodyLarge,
+            text = data.wikipediaURL,
         )
 
         Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
-//@Preview
-//@Composable
-//fun PreviewDetailsScreen() {
-//    Surface {
-//        BreedsDetailsScreen(
-//            state = BreedsDetailsState(
-//                breedId = "1",
-//                data = BreedsData(
-//                    id = "1",
-//                    name = "Macka1"
-//                ),
-//            ),
-//            onClose = {},
-//        )
-//    }
-//}
+@Preview
+@Composable
+fun PreviewDetailsScreen() {
+    Surface {
+        BreedsDetailsScreen(
+            state = BreedsDetailsState(
+                breedId = "1",
+                data = BreedsUiModel(
+                    id="1",
+                    name="Macka1",
+                    description = "dasjkghbdaslkghasdukghsklgdasjkdg",
+                    alternativeName = "macka",
+                    temperament = "dasfsd,sdafsa,sadfsa",
+                    origin = "Serbia",
+                    lifeSpan = "10",
+                    imageUrl = "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg",
+                    weight = "10",
+                    wikipediaURL = "http://wikipedia.com",
+                    rare = 1,
+                    adaptability = 1,
+                    affectionLevel = 2
+                ),
+            ),
+            onClose = {},
+        )
+    }
+}

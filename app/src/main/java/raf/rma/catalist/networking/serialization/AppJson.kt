@@ -1,5 +1,6 @@
 package raf.rma.catalist.networking.serialization
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
 val AppJson = Json {

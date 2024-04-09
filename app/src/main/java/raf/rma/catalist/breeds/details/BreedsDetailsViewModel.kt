@@ -3,13 +3,13 @@ package raf.rma.catalist.breeds.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import raf.rma.catalist.breeds.api.model.BreedsApiModel
+import raf.rma.catalist.breeds.model.BreedsUiModel
 import raf.rma.catalist.breeds.repository.BreedRepository
 import java.io.IOException
 
@@ -50,9 +50,11 @@ class BreedsDetailsViewModel (
         viewModelScope.launch {
             setState { copy(fetching = true) }
             try {
-                withContext(Dispatchers.IO) {
-                    repository.fetchBreedDetails(breedId = breedId)
+                val data = withContext(Dispatchers.IO) {
+                    repository.fetchBreedDetails(breedId = breedId).asBreedsUiModel()
                 }
+                setState { copy(breedId = data.id) }
+                setState { copy(data = data) }
             } catch (error: IOException) {
                 setState {
                     copy(error = BreedsDetailsState.DetailsError.DataUpdateFailed(cause = error))
@@ -62,4 +64,20 @@ class BreedsDetailsViewModel (
             }
         }
     }
+
+    private fun BreedsApiModel.asBreedsUiModel() = BreedsUiModel(
+        id = this.id,
+        name = this.name,
+        description = this.description,
+        alternativeName = this.alternativeName,
+        adaptability = this.adaptability,
+        affectionLevel = this.affectionLevel,
+        imageUrl = this.image.url,
+        lifeSpan = this.lifeSpan,
+        origin = this.origin,
+        rare = this.rare,
+        temperament = this.temperament,
+        weight = this.weight.metric,
+        wikipediaURL = this.wikipediaURL
+    )
 }

@@ -1,8 +1,6 @@
 package raf.rma.catalist.breeds.details
 
-import android.telephony.DataFailCause
-import raf.rma.catalist.breeds.domain.BreedsData
-import raf.rma.catalist.breeds.domain.BreedsUiModel
+import raf.rma.catalist.breeds.model.BreedsUiModel
 
 data class BreedsDetailsState (
     val breedId: String,

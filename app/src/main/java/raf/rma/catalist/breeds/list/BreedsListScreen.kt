@@ -36,8 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import raf.rma.catalist.breeds.domain.BreedsData
-import raf.rma.catalist.breeds.domain.BreedsUiModel
+import raf.rma.catalist.breeds.model.BreedsUiModel
 import raf.rma.catalist.breeds.repository.SampleData
 import raf.rma.catalist.core.theme.CatalistTheme
 
@@ -66,7 +65,7 @@ fun BreedsListScreen(
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "BreedList") },
+                title = { Text(text = "BreedsList") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer
@@ -108,7 +107,7 @@ fun BreedsListScreen(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center,
                             ) {
-                                Text(text = "No passwords.")
+                                Text(text = "No breeds.")
                             }
                         }
                     }
@@ -167,7 +166,8 @@ private fun BreedsListItem(
     ) {
         Text(
             modifier = Modifier.padding(all = 16.dp),
-            text = data.name
+//            text = data.name
+            text = data.name + " " + data.alternativeName
         )
 
         Row {
@@ -176,7 +176,15 @@ private fun BreedsListItem(
                     .padding(horizontal = 16.dp)
                     .padding(bottom = 16.dp)
                     .weight(weight = 1f),
-                text = data.description,
+                text = data.description.take(250),
+            )
+
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp)
+                    .weight(weight = 1f),
+                text = data.temperament,
             )
 
             Icon(
@@ -187,15 +195,14 @@ private fun BreedsListItem(
         }
     }
 }
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Preview
-//@Composable
-//fun PreviewBreedsListScreen() {
-//    CatalistTheme {
-//        BreedsListScreen(
-//            state = BreedsListState(breeds = SampleData),
-//            onItemClick = {}
-//        )
-//    }
-//}
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun PreviewBreedsListScreen() {
+    CatalistTheme {
+        BreedsListScreen(
+            state = BreedsListState(breeds = SampleData),
+            onItemClick = {}
+        )
+    }
+}
