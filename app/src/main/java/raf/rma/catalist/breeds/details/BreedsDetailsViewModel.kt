@@ -32,19 +32,19 @@ class BreedsDetailsViewModel (
 //    }
 
     init {
-        observeBreedDetails()
+//        observeBreedDetails()
         fetchBreedDetails()
     }
 
-    private fun observeBreedDetails(){
-        viewModelScope.launch {
-            repository.observeBreedDetails(breedId = breedId)
-                .filterNotNull()
-                .collect {
-                    setState { copy(data = it) }
-                }
-        }
-    }
+//    private fun observeBreedDetails(){
+//        viewModelScope.launch {
+//            repository.observeBreedDetails(breedId = breedId)
+//                .filterNotNull()
+//                .collect {
+//                    setState { copy(data = it) }
+//                }
+//        }
+//    }
 
     private fun fetchBreedDetails(){
         viewModelScope.launch {

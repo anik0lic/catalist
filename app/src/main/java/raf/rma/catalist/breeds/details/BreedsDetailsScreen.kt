@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import raf.rma.catalist.breeds.domain.BreedsData
+import raf.rma.catalist.breeds.domain.BreedsUiModel
 import raf.rma.catalist.core.compose.AppIconButton
 import raf.rma.catalist.core.compose.NoDataContent
 
@@ -125,7 +126,7 @@ fun BreedsDetailsScreen(
 
 @Composable
 private fun BreedsDataColumn(
-    data: BreedsData,
+    data: BreedsUiModel,
 ) {
     Column {
         Spacer(modifier = Modifier.height(16.dp))
@@ -148,19 +149,19 @@ private fun BreedsDataColumn(
     }
 }
 
-@Preview
-@Composable
-fun PreviewDetailsScreen() {
-    Surface {
-        BreedsDetailsScreen(
-            state = BreedsDetailsState(
-                breedId = "1",
-                data = BreedsData(
-                    id = "1",
-                    name = "Macka1"
-                ),
-            ),
-            onClose = {},
-        )
-    }
-}
+//@Preview
+//@Composable
+//fun PreviewDetailsScreen() {
+//    Surface {
+//        BreedsDetailsScreen(
+//            state = BreedsDetailsState(
+//                breedId = "1",
+//                data = BreedsData(
+//                    id = "1",
+//                    name = "Macka1"
+//                ),
+//            ),
+//            onClose = {},
+//        )
+//    }
+//}

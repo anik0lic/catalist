@@ -7,32 +7,37 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import raf.rma.catalist.breeds.api.BreedsApi
 import raf.rma.catalist.breeds.domain.BreedsData
+import raf.rma.catalist.networking.retrofit
 import kotlin.time.Duration.Companion.seconds
 
 object BreedRepository {
 
-    private val breeds = MutableStateFlow(listOf<BreedsData>())
+//    private val breeds = MutableStateFlow(listOf<BreedsData>())
+    private val breedsApi: BreedsApi = retrofit.create(BreedsApi::class.java)
 
-    fun allBreeds(): List<BreedsData> = breeds.value
+//    fun allBreeds(): List<BreedsData> = breeds.value
 
-    suspend fun fetchBreeds(){
-        delay(2.seconds)
-    }
+    suspend fun fetchAllBreeds() = breedsApi.getAllBreeds()
+//        delay(2.seconds)
+//        breeds.update { SampleData.toMutableList() }
 
-    suspend fun fetchBreedDetails(breedId : String){
-        delay(1.seconds)
-    }
 
-    fun observeBreeds(): Flow<List<BreedsData>> = breeds.asStateFlow()
+    suspend fun fetchBreedDetails(breedId : String)=
+//        delay(1.seconds)
+        breedsApi.getBreed(breedId = breedId)
+//    }
 
-    fun observeBreedDetails(breedId: String): Flow<BreedsData?> {
-        return observeBreeds()
-            .map { breeds -> breeds.find { it.id == breedId } }
-            .distinctUntilChanged()
-    }
+//    fun observeBreeds(): Flow<List<BreedsData>> = breeds.asStateFlow()
 
-    fun getBreedById(id: String): BreedsData? {
-        return breeds.value.find { it.id == id }
-    }
+//    fun observeBreedDetails(breedId: String): Flow<BreedsData?> {
+//        return observeBreeds()
+//            .map { breeds -> breeds.find { it.id == breedId } }
+//            .distinctUntilChanged()
+//    }
+
+//    fun getBreedById(id: String): BreedsData? {
+//        return breeds.value.find { it.id == id }
+//    }
 }

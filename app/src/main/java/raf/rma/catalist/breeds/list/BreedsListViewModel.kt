@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import raf.rma.catalist.breeds.api.model.BreedsApiModel
+import raf.rma.catalist.breeds.domain.BreedsUiModel
 import raf.rma.catalist.breeds.repository.BreedRepository
 import java.io.IOException
 
@@ -20,27 +22,28 @@ class BreedsListViewModel (
     private fun setState(reducer: BreedsListState.() -> BreedsListState) = _state.getAndUpdate(reducer)
 
     init {
-        observeBreeds()
-        fetchBreeds()
+//        observeBreeds()
+        fetchAllBreeds()
     }
 
     private fun observeBreeds(){
         // We are launching a new coroutine
-        viewModelScope.launch {
+//        viewModelScope.launch {
             // Which will observe all changes to our passwords
-            repository.observeBreeds().collect {
-                setState { copy(breeds = it) }
-            }
-        }
+//            repository.observeBreeds().collect {
+//                setState { copy(breeds = it) }
+//            }
+//        }
     }
 
-    private fun fetchBreeds(){
+    private fun fetchAllBreeds(){
         viewModelScope.launch {
             setState { copy(fetching = true) }
             try {
-                withContext(Dispatchers.IO) {
-                    repository.fetchBreeds()
+                val breeds = withContext(Dispatchers.IO) {
+                    repository.fetchAllBreeds().map { it.asBreedsUiModel() }
                 }
+                setState { copy(breeds = breeds) }
             } catch (error: IOException) {
                 setState { copy(error = BreedsListState.ListError.ListUpdateFailed(cause = error)) }
             } finally {
@@ -48,4 +51,10 @@ class BreedsListViewModel (
             }
         }
     }
+
+    private fun BreedsApiModel.asBreedsUiModel() = BreedsUiModel(
+        id = this.id,
+        name = this.name,
+        description = this.description,
+    )
 }

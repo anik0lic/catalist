@@ -37,6 +37,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import raf.rma.catalist.breeds.domain.BreedsData
+import raf.rma.catalist.breeds.domain.BreedsUiModel
 import raf.rma.catalist.breeds.repository.SampleData
 import raf.rma.catalist.core.theme.CatalistTheme
 
@@ -60,7 +61,7 @@ fun NavGraphBuilder.breedsListScreen(
 @Composable
 fun BreedsListScreen(
     state: BreedsListState,
-    onItemClick: (BreedsData) -> Unit
+    onItemClick: (BreedsUiModel) -> Unit
 ) {
     Scaffold (
         topBar = {
@@ -119,9 +120,9 @@ fun BreedsListScreen(
 
 @Composable
 private fun BreedsList(
-    items: List<BreedsData>,
+    items: List<BreedsUiModel>,
     paddingValues: PaddingValues,
-    onItemClick: (BreedsData) -> Unit
+    onItemClick: (BreedsUiModel) -> Unit
 ){
     val scrollState = rememberScrollState()
     Column(
@@ -153,7 +154,7 @@ private fun BreedsList(
 
 @Composable
 private fun BreedsListItem(
-    data: BreedsData,
+    data: BreedsUiModel,
     onClick: () -> Unit
 ){
     Card(
@@ -166,7 +167,7 @@ private fun BreedsListItem(
     ) {
         Text(
             modifier = Modifier.padding(all = 16.dp),
-            text = data.id
+            text = data.name
         )
 
         Row {
@@ -175,7 +176,7 @@ private fun BreedsListItem(
                     .padding(horizontal = 16.dp)
                     .padding(bottom = 16.dp)
                     .weight(weight = 1f),
-                text = data.id,
+                text = data.description,
             )
 
             Icon(
@@ -187,14 +188,14 @@ private fun BreedsListItem(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun PreviewBreedsListScreen() {
-    CatalistTheme {
-        BreedsListScreen(
-            state = BreedsListState(breeds = SampleData),
-            onItemClick = {}
-        )
-    }
-}
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Preview
+//@Composable
+//fun PreviewBreedsListScreen() {
+//    CatalistTheme {
+//        BreedsListScreen(
+//            state = BreedsListState(breeds = SampleData),
+//            onItemClick = {}
+//        )
+//    }
+//}
