@@ -1,6 +1,7 @@
 package raf.rma.catalist.breeds.details
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,9 +10,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Surface
@@ -23,11 +28,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,11 +48,16 @@ import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import raf.rma.catalist.R
 import raf.rma.catalist.breeds.details.BreedsDetailsContract.BreedsDetailsState
+import raf.rma.catalist.breeds.list.BreedsListContract
 import raf.rma.catalist.breeds.model.BreedsUiModel
 import raf.rma.catalist.breeds.model.ImageUiModel
 import raf.rma.catalist.core.compose.AppIconButton
 import raf.rma.catalist.core.compose.NoDataContent
+import raf.rma.catalist.core.compose.SearchBar
+import raf.rma.catalist.core.theme.LightOrange
+import raf.rma.catalist.core.theme.Orange
 
 fun NavGraphBuilder.breedsDetails(
     route: String,
@@ -82,20 +97,27 @@ fun BreedsDetailsScreen(
 ) {
     Scaffold(
         topBar = {
-            LargeTopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
-                    Text(text = state.data?.name ?: "Loading")
+                    state.data?.let {
+                        Text(
+                            text = it.name,
+                            style = TextStyle(
+                                fontSize = 27.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
+                    }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                ),
                 navigationIcon = {
                     AppIconButton(
                         imageVector = Icons.Default.ArrowBack,
                         onClick = onClose,
                     )
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = LightOrange
+                )
             )
         },
         content = { paddingValues ->
@@ -143,58 +165,49 @@ private fun BreedsDataColumn(
     image: ImageUiModel
 ) {
     Column {
-        Spacer(modifier = Modifier.height(16.dp))
-
+//        Spacer(modifier = Modifier.height(16.dp))
         SubcomposeAsyncImage(
-            modifier = Modifier.size(100.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(280.dp)
+                .align(Alignment.CenterHorizontally),
             model = image.url,
+            contentScale = ContentScale.Crop,
             contentDescription = null,
         )
-
-//        val painter: Painter =
-//            rememberAsyncImagePainter(
-////            modifier = Modifier.size(200.dp), model = data.imageUrl, contentDescription = null
-//                ImageRequest.Builder(LocalContext.current).data(data = data.image.url).apply ( block = fun ImageRequest.Builder.(){
-//                    crossfade(true)
-//                } ).build()
-//            )
-//
-//        Image(painter = painter, contentDescription = "aaa",
-//            contentScale = ContentScale.FillWidth,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(200.dp))
-
+//        Divider(thickness = 1.dp, color = Orange)
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.headlineSmall,
-            text = data.description,
+//            style = MaterialTheme.typography.headlineSmall,
+            text = "Description: " + data.description,
+            style = TextStyle(
+                fontSize = 18.sp,
+            )
         )
-
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.bodyLarge,
-            text = data.origin,
+            text = "Origin: " + data.origin,
         )
 
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.bodyLarge,
-            text = data.temperament,
+            text = "Temperament: " + data.temperament,
         )
 
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.bodyLarge,
-            text = data.lifeSpan,
+            text = "Life Span: " + data.lifeSpan,
         )
 
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
             style = MaterialTheme.typography.bodyLarge,
-            text = data.weight,
+            text = "Weight(Metrics): " + data.weight,
         )
 
 //        Text(
@@ -221,9 +234,9 @@ fun PreviewDetailsScreen() {
             state = BreedsDetailsState(
                 breedId = "1",
                 data = BreedsUiModel(
-                    id="1",
-                    name="Macka1",
-                    description = "dasjkghbdaslkghasdukghsklgdasjkdg",
+                    id="2",
+                    name="Macka2",
+                    description = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium.",
                     alternativeName = "macka",
                     temperament = "dasfsd,sdafsa,sadfsa",
                     origin = "Serbia",

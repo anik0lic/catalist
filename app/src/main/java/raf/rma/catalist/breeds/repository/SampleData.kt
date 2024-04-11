@@ -21,7 +21,7 @@ val SampleData = listOf(
     BreedsUiModel(
         id="2",
         name="Macka2",
-        description = "dasjkghbdaslkghasdukghsklgdasjkdg",
+        description = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium.",
         alternativeName = "macka",
         temperament = "dasfsd,sdafsa,sadfsa",
         origin = "Serbia",
@@ -36,7 +36,7 @@ val SampleData = listOf(
     BreedsUiModel(
         id="3",
         name="Macka3",
-        description = "dasjkghbdaslkghasdukghsklgdasjkdg",
+        description = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium.",
         alternativeName = "macka",
         temperament = "dasfsd,sdafsa,sadfsa",
         origin = "Serbia",
@@ -52,7 +52,7 @@ val SampleData = listOf(
         id="4",
         name="Macka4",
         description = "dasjkghbdaslkghasdukghsklgdasjkdg",
-        alternativeName = "macka",
+        alternativeName = "",
         temperament = "dasfsd,sdafsa,sadfsa",
         origin = "Serbia",
         lifeSpan = "10",

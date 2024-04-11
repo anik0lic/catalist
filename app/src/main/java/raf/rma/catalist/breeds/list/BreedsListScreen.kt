@@ -1,5 +1,6 @@
 package raf.rma.catalist.breeds.list
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,25 +8,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -55,6 +50,7 @@ import raf.rma.catalist.breeds.repository.SampleData
 import raf.rma.catalist.core.compose.SearchBar
 import raf.rma.catalist.core.theme.CatalistTheme
 import raf.rma.catalist.core.theme.LightOrange
+import raf.rma.catalist.core.theme.Orange
 
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.breedsListScreen(
@@ -216,42 +212,52 @@ private fun BreedsListItem(
     onClick: () -> Unit
 ){
     Card(
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        border = BorderStroke(1.dp, Orange),
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
             .clickable {
                 onClick()
-            },
+            }
     ) {
-        Text(
-            modifier = Modifier.padding(all = 16.dp),
-//            text = data.name
-            text = data.name + " " + data.alternativeName
-        )
-
-        Row {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
             Text(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp)
-                    .weight(weight = 1f),
+                text = if (data.alternativeName.isNotEmpty()) data.name + " (" + data.alternativeName + ")" else data.name,
+                style = TextStyle(
+                    fontSize = 21.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
                 text = data.description.take(250).plus("..."),
+                style = TextStyle(
+                    fontSize = 18.sp,
+//                    fontWeight = FontWeight.Bold
+                )
             )
-
+            Spacer(modifier = Modifier.height(8.dp))
+            val threeTemperaments = data.temperament.split(",")
             Text(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp)
-                    .weight(weight = 1f),
-                text = data.temperament,
-            )
-
-            Icon(
-                modifier = Modifier.padding(end = 16.dp),
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = null,
+                text = "Temperament: " + threeTemperaments.shuffled().take(3).joinToString(", "),
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium
+                )
             )
         }
+//        Icon(
+////                modifier = Modifier
+////                    .align(Alignment.CenterVertically),
+//            imageVector = Icons.Default.KeyboardArrowRight,
+//            contentDescription = null,
+//        )
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
