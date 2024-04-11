@@ -12,27 +12,20 @@ data class BreedsApiModel(
     val origin: String,
     val description: String,
     @SerialName("life_span") val lifeSpan: String,
-    val image: Image = Image("0", 0, 0, "0"),
     val weight: Weight,
     @SerialName("wikipedia_url") val wikipediaURL: String = "",
     val rare: Int,
 
     val adaptability: Int,
     @SerialName("affection_level") val affectionLevel: Int,
+
+    @SerialName("reference_image_id") val referenceImageId: String = ""
 )
 
 @Serializable
 data class Weight(
     val imperial: String,
     val metric: String
-)
-
-@Serializable
-data class Image(
-    val id: String,
-    val width: Int,
-    val height: Int,
-    val url: String
 )
 
 //{

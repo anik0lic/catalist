@@ -17,9 +17,9 @@ class BreedsListViewModel (
     private val repository: BreedRepository = BreedRepository
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(BreedsListState())
+    private val _state = MutableStateFlow(BreedsListContract.BreedsListState())
     val state = _state.asStateFlow()
-    private fun setState(reducer: BreedsListState.() -> BreedsListState) = _state.getAndUpdate(reducer)
+    private fun setState(reducer: BreedsListContract.BreedsListState.() -> BreedsListContract.BreedsListState) = _state.getAndUpdate(reducer)
 
     init {
 //        observeBreeds()
@@ -41,11 +41,11 @@ class BreedsListViewModel (
             setState { copy(fetching = true) }
             try {
                 val breeds = withContext(Dispatchers.IO) {
-                    repository.fetchAllBreeds().map { it.asBreedsUiModel() }
+                    repository.getAllBreeds().map { it.asBreedsUiModel() }
                 }
                 setState { copy(breeds = breeds) }
             } catch (error: IOException) {
-                setState { copy(error = BreedsListState.ListError.ListUpdateFailed(cause = error)) }
+                setState { copy(error = BreedsListContract.BreedsListState.ListError.ListUpdateFailed(cause = error)) }
             } finally {
                 setState { copy(fetching = false) }
             }
@@ -59,12 +59,12 @@ class BreedsListViewModel (
         alternativeName = this.alternativeName,
         adaptability = this.adaptability,
         affectionLevel = this.affectionLevel,
-        imageUrl = this.image.url,
         lifeSpan = this.lifeSpan,
         origin = this.origin,
         rare = this.rare,
         temperament = this.temperament,
         weight = this.weight.metric,
-        wikipediaURL = this.wikipediaURL
+        wikipediaURL = this.wikipediaURL,
+        referenceImageId = this.referenceImageId
     )
 }

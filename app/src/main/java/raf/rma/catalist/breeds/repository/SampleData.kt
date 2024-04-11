@@ -11,12 +11,12 @@ val SampleData = listOf(
         temperament = "dasfsd,sdafsa,sadfsa",
         origin = "Serbia",
         lifeSpan = "10",
-        imageUrl = "http://slika.com",
         weight = "10",
         wikipediaURL = "http://wikipedia.com",
         rare = 1,
         adaptability = 1,
-        affectionLevel = 2
+        affectionLevel = 2,
+        referenceImageId = "dsafasdf"
     ),
     BreedsUiModel(
         id="2",
@@ -26,12 +26,12 @@ val SampleData = listOf(
         temperament = "dasfsd,sdafsa,sadfsa",
         origin = "Serbia",
         lifeSpan = "10",
-        imageUrl = "http://slika.com",
         weight = "10",
         wikipediaURL = "http://wikipedia.com",
         rare = 1,
         adaptability = 1,
-        affectionLevel = 2
+        affectionLevel = 2,
+        referenceImageId = "dsafasdf"
     ),
     BreedsUiModel(
         id="3",
@@ -41,12 +41,12 @@ val SampleData = listOf(
         temperament = "dasfsd,sdafsa,sadfsa",
         origin = "Serbia",
         lifeSpan = "10",
-        imageUrl = "http://slika.com",
         weight = "10",
         wikipediaURL = "http://wikipedia.com",
         rare = 1,
         adaptability = 1,
-        affectionLevel = 2
+        affectionLevel = 2,
+        referenceImageId = "dsafasdf"
     ),
     BreedsUiModel(
         id="4",
@@ -56,11 +56,11 @@ val SampleData = listOf(
         temperament = "dasfsd,sdafsa,sadfsa",
         origin = "Serbia",
         lifeSpan = "10",
-        imageUrl = "http://slika.com",
         weight = "10",
         wikipediaURL = "http://wikipedia.com",
         rare = 1,
         adaptability = 1,
-        affectionLevel = 2
+        affectionLevel = 2,
+        referenceImageId = "dsafasdf"
     )
 )

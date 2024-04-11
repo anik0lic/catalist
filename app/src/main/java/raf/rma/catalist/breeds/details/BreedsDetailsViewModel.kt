@@ -9,7 +9,10 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import raf.rma.catalist.breeds.api.model.BreedsApiModel
+import raf.rma.catalist.breeds.api.model.ImageApiModel
+import raf.rma.catalist.breeds.details.BreedsDetailsContract.BreedsDetailsState
 import raf.rma.catalist.breeds.model.BreedsUiModel
+import raf.rma.catalist.breeds.model.ImageUiModel
 import raf.rma.catalist.breeds.repository.BreedRepository
 import java.io.IOException
 
@@ -32,35 +35,41 @@ class BreedsDetailsViewModel (
 //    }
 
     init {
-//        observeBreedDetails()
         fetchBreedDetails()
     }
-
-//    private fun observeBreedDetails(){
-//        viewModelScope.launch {
-//            repository.observeBreedDetails(breedId = breedId)
-//                .filterNotNull()
-//                .collect {
-//                    setState { copy(data = it) }
-//                }
-//        }
-//    }
 
     private fun fetchBreedDetails(){
         viewModelScope.launch {
             setState { copy(fetching = true) }
             try {
                 val data = withContext(Dispatchers.IO) {
-                    repository.fetchBreedDetails(breedId = breedId).asBreedsUiModel()
+                    repository.getBreedDetails(breedId = breedId).asBreedsUiModel()
                 }
                 setState { copy(breedId = data.id) }
                 setState { copy(data = data) }
+                fetchImage(data.referenceImageId)
             } catch (error: IOException) {
                 setState {
                     copy(error = BreedsDetailsState.DetailsError.DataUpdateFailed(cause = error))
                 }
             } finally {
                 setState { copy(fetching = false) }
+            }
+        }
+    }
+
+    private fun fetchImage(imageId: String){
+        viewModelScope.launch {
+            try {
+                val image = withContext(Dispatchers.IO) {
+                    repository.getImage(imageId = imageId).asImageUiModel()
+                }
+                setState { copy( image = image) }
+            } catch (error: IOException) {
+//                setState {
+//                    copy(error = BreedsDetailsState.DetailsError.DataUpdateFailed(cause = error))
+//                }
+                //error
             }
         }
     }
@@ -72,12 +81,17 @@ class BreedsDetailsViewModel (
         alternativeName = this.alternativeName,
         adaptability = this.adaptability,
         affectionLevel = this.affectionLevel,
-        imageUrl = this.image.url,
         lifeSpan = this.lifeSpan,
         origin = this.origin,
         rare = this.rare,
         temperament = this.temperament,
         weight = this.weight.metric,
-        wikipediaURL = this.wikipediaURL
+        wikipediaURL = this.wikipediaURL,
+        referenceImageId = this.referenceImageId
+    )
+
+    private fun ImageApiModel.asImageUiModel() = ImageUiModel(
+        id = this.id,
+        url = this.url
     )
 }

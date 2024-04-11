@@ -10,8 +10,9 @@ object BreedRepository {
 
 //    fun allBreeds(): List<BreedsData> = breeds.value
 
-    suspend fun fetchAllBreeds() = breedsApi.getAllBreeds()
-    suspend fun fetchBreedDetails(breedId : String) = breedsApi.getBreed(breedId = breedId)
+    suspend fun getAllBreeds() = breedsApi.getAllBreeds()
+    suspend fun getBreedDetails(breedId : String) = breedsApi.getBreed(breedId = breedId)
+    suspend fun getImage(imageId: String) = breedsApi.getImage(imageId = imageId)
 
 //    fun observeBreeds(): Flow<List<BreedsData>> = breeds.asStateFlow()
 

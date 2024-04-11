@@ -1,9 +1,11 @@
 package raf.rma.catalist.breeds.details
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,6 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -31,7 +36,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import raf.rma.catalist.breeds.details.BreedsDetailsContract.BreedsDetailsState
 import raf.rma.catalist.breeds.model.BreedsUiModel
+import raf.rma.catalist.breeds.model.ImageUiModel
 import raf.rma.catalist.core.compose.AppIconButton
 import raf.rma.catalist.core.compose.NoDataContent
 
@@ -107,16 +116,19 @@ fun BreedsDetailsScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center,
                     ) {
-                        val errorMessage = when (state.error) {
-                            is BreedsDetailsState.DetailsError.DataUpdateFailed ->
-                                "Failed to load. Error message: ${state.error.cause?.message}."
-                        }
-                        Text(text = errorMessage)
+//                        val errorMessage = when (state.error) {
+//                            is BreedsDetailsState.DetailsError.DataUpdateFailed ->
+//                                "Failed to load. Error message: ${state.error.cause?.message}."
+//                        }
+//                        Text(text = errorMessage)
                     }
                 } else if (state.data != null) {
-                    BreedsDataColumn(
-                        data = state.data,
-                    )
+                    state.image?.let {
+                        BreedsDataColumn(
+                            data = state.data,
+                            image = it
+                        )
+                    }
                 } else {
                     NoDataContent(id = state.breedId)
                 }
@@ -128,17 +140,30 @@ fun BreedsDetailsScreen(
 @Composable
 private fun BreedsDataColumn(
     data: BreedsUiModel,
+    image: ImageUiModel
 ) {
     Column {
         Spacer(modifier = Modifier.height(16.dp))
 
-//        SubcomposeAsyncImage(
-//            modifier = Modifier.size(100.dp),
-//            model = data.imageUrl,
-//            contentDescription = null,
-//        )
+        SubcomposeAsyncImage(
+            modifier = Modifier.size(100.dp),
+            model = image.url,
+            contentDescription = null,
+        )
 
-        AsyncImage(modifier = Modifier.size(200.dp), model = data.imageUrl, contentDescription = null)
+//        val painter: Painter =
+//            rememberAsyncImagePainter(
+////            modifier = Modifier.size(200.dp), model = data.imageUrl, contentDescription = null
+//                ImageRequest.Builder(LocalContext.current).data(data = data.image.url).apply ( block = fun ImageRequest.Builder.(){
+//                    crossfade(true)
+//                } ).build()
+//            )
+//
+//        Image(painter = painter, contentDescription = "aaa",
+//            contentScale = ContentScale.FillWidth,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(200.dp))
 
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -203,12 +228,12 @@ fun PreviewDetailsScreen() {
                     temperament = "dasfsd,sdafsa,sadfsa",
                     origin = "Serbia",
                     lifeSpan = "10",
-                    imageUrl = "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg",
                     weight = "10",
                     wikipediaURL = "http://wikipedia.com",
                     rare = 1,
                     adaptability = 1,
-                    affectionLevel = 2
+                    affectionLevel = 2,
+                    referenceImageId = "0XYvRd7oD"
                 ),
             ),
             onClose = {},

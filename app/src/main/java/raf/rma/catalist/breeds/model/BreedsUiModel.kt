@@ -8,10 +8,10 @@ data class BreedsUiModel (
     val origin: String,
     val description: String,
     val lifeSpan: String,
-    val imageUrl: String,
     val weight: String,
     val wikipediaURL: String,
     val rare: Int,
+    val referenceImageId: String,
 
     val adaptability: Int,
     val affectionLevel: Int,
