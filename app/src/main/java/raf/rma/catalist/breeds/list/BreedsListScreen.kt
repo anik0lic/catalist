@@ -1,5 +1,6 @@
 package raf.rma.catalist.breeds.list
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,15 +14,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -31,19 +35,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import raf.rma.catalist.R
 import raf.rma.catalist.breeds.list.BreedsListContract.BreedsListState
 import raf.rma.catalist.breeds.list.BreedsListContract.BreedsListUiEvent
 import raf.rma.catalist.breeds.model.BreedsUiModel
 import raf.rma.catalist.breeds.repository.SampleData
 import raf.rma.catalist.core.compose.SearchBar
 import raf.rma.catalist.core.theme.CatalistTheme
+import raf.rma.catalist.core.theme.LightOrange
 
 @ExperimentalMaterial3Api
 fun NavGraphBuilder.breedsListScreen(
@@ -73,28 +84,44 @@ fun BreedsListScreen(
 ) {
     Scaffold (
         topBar = {
-             MediumTopAppBar(
-                 title = { Text(text = "BreedsList") },
-                 colors = TopAppBarDefaults.topAppBarColors(
-                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                     scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                 ),
-                 actions = {
-                     SearchBar(
-                         modifier = Modifier
-                             .fillMaxWidth()
-                             .background(Color.White),
-                         onQueryChange = { query ->
-                             eventPublisher(
-                                 BreedsListUiEvent.SearchQueryChanged(
-                                     query = query
-                                 )
-                             )
-                         },
-                         onCloseClicked = {eventPublisher(BreedsListUiEvent.CloseSearchMode)}
-                     )
-                 }
-             )
+            Column {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(
+                            text = "Cat Breeds List",
+                            style = TextStyle(
+                                fontSize = 27.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
+                    },
+                    navigationIcon = {
+                        Image(
+                            painter = painterResource(id = R.drawable.cat_logo),
+                            contentDescription = "logo",
+                            modifier = Modifier
+                        )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = LightOrange
+                    )
+                )
+                SearchBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(LightOrange)
+                        .padding(horizontal = 20.dp, vertical = 8.dp)
+                        .clip(RoundedCornerShape(30.dp)),
+                    onQueryChange = { query ->
+                        eventPublisher(
+                            BreedsListUiEvent.SearchQueryChanged(
+                                query = query
+                            )
+                        )
+                    },
+                    onCloseClicked = { eventPublisher(BreedsListUiEvent.CloseSearchMode) }
+                )
+            }
         },
         content = {
             BreedsList(

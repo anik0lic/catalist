@@ -5,11 +5,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +24,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import raf.rma.catalist.core.theme.CatalistTheme
+import raf.rma.catalist.core.theme.Orange
 
 @Composable
 fun AppIconButton(
@@ -38,17 +43,18 @@ fun AppIconButton(
         )
     }
 }
+
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
     onQueryChange: (String) -> Unit,
-    onCloseClicked: () -> Unit,
+    onCloseClicked: () -> Unit
 ) {
     var text by remember { mutableStateOf("") }
     var active by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
-    OutlinedTextField(
+    TextField(
         modifier = modifier,
         value = text,
         onValueChange = { newText ->
@@ -85,6 +91,12 @@ fun SearchBar(
             onSearch = {
                 focusManager.clearFocus()
             }
+        ),
+        colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = Color.White,
+            unfocusedIndicatorColor = Orange,
+            focusedContainerColor = Color.White,
+            focusedIndicatorColor = Orange,
         ),
     )
 }

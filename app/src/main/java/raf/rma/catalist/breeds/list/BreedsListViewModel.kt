@@ -85,7 +85,7 @@ class BreedsListViewModel (
         viewModelScope.launch {
             events
                 .filterIsInstance<BreedsListUiEvent.SearchQueryChanged>()
-                .debounce(2.seconds)
+                .debounce(1.seconds)
                 .collect {
                     println("observe search query")
                     // Called only when search query was changed
