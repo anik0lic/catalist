@@ -1,9 +1,10 @@
 package raf.rma.catalist.core.compose
 
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -17,8 +18,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 
 @Composable
 fun AppIconButton(
@@ -35,47 +38,53 @@ fun AppIconButton(
         )
     }
 }
-
 @Composable
-fun AppDropdownMenuItem(
-    icon: ImageVector,
-    text: String,
-    onClick: () -> Unit,
+fun SearchBar(
+    modifier: Modifier = Modifier,
+    onQueryChange: (String) -> Unit,
+    onCloseClicked: () -> Unit,
 ) {
-    DropdownMenuItem(
-        leadingIcon = { Icon(imageVector = icon, contentDescription = text) },
-        text = { Text(text = text) },
-        onClick = onClick,
-    )
-}
+    var text by remember { mutableStateOf("") }
+    var active by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
 
-@Composable
-fun PasswordOutlinedTextField(
-    modifier: Modifier,
-    password: String,
-    onPasswordChange: (String) -> Unit
-) {
-    var passwordVisible by remember { mutableStateOf(false) }
     OutlinedTextField(
         modifier = modifier,
-        value = password,
-        onValueChange = onPasswordChange,
-        trailingIcon = {
-            AppIconButton(imageVector = if (passwordVisible) {
-                Icons.Outlined.Warning
-            } else {
-                Icons.Outlined.Lock
-            }, onClick = {
-                passwordVisible = !passwordVisible
-            })
+        value = text,
+        onValueChange = { newText ->
+            text = newText
+            active = true
+            onQueryChange(newText)
         },
-        placeholder = { Text(text = "Password") },
-        label = { Text(text = "Password") },
-        visualTransformation = if (passwordVisible) {
-            VisualTransformation.None
-        } else {
-            PasswordVisualTransformation()
-        }
+        placeholder = { Text(text = "Search") },
+        textStyle = TextStyle(color = Color.Black),
+        leadingIcon = { AppIconButton(imageVector = Icons.Default.Search, onClick = { }) },
+        trailingIcon = {
+            if(active){
+                AppIconButton(
+                    imageVector = Icons.Default.Clear,
+                    onClick = {
+                        if(text.isNotEmpty()) {
+                            text = ""
+                            onQueryChange(text)
+                        }
+                        else{
+                            active = false
+                            onCloseClicked()
+                            focusManager.clearFocus()
+                        }
+                    }
+                )
+            }
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Search
+        ),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                focusManager.clearFocus()
+            }
+        ),
     )
-
 }

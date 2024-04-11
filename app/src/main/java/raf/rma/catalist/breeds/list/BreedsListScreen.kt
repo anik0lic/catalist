@@ -1,5 +1,6 @@
 package raf.rma.catalist.breeds.list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,11 +17,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -30,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,8 +39,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import raf.rma.catalist.breeds.list.BreedsListContract.BreedsListState
+import raf.rma.catalist.breeds.list.BreedsListContract.BreedsListUiEvent
 import raf.rma.catalist.breeds.model.BreedsUiModel
 import raf.rma.catalist.breeds.repository.SampleData
+import raf.rma.catalist.core.compose.SearchBar
 import raf.rma.catalist.core.theme.CatalistTheme
 
 @ExperimentalMaterial3Api
@@ -51,6 +55,9 @@ fun NavGraphBuilder.breedsListScreen(
 
     BreedsListScreen(
         state = state,
+        eventPublisher = {
+            breedsListViewModel.setEvent(it)
+        },
         onItemClick = {
             navController.navigate(route = "breeds/${it.id}")
         }
@@ -61,22 +68,38 @@ fun NavGraphBuilder.breedsListScreen(
 @Composable
 fun BreedsListScreen(
     state: BreedsListState,
+    eventPublisher: (uiEvent: BreedsListUiEvent) -> Unit,
     onItemClick: (BreedsUiModel) -> Unit
 ) {
     Scaffold (
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text(text = "BreedsList") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            )
+             MediumTopAppBar(
+                 title = { Text(text = "BreedsList") },
+                 colors = TopAppBarDefaults.topAppBarColors(
+                     containerColor = MaterialTheme.colorScheme.primaryContainer,
+                     scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                 ),
+                 actions = {
+                     SearchBar(
+                         modifier = Modifier
+                             .fillMaxWidth()
+                             .background(Color.White),
+                         onQueryChange = { query ->
+                             eventPublisher(
+                                 BreedsListUiEvent.SearchQueryChanged(
+                                     query = query
+                                 )
+                             )
+                         },
+                         onCloseClicked = {eventPublisher(BreedsListUiEvent.CloseSearchMode)}
+                     )
+                 }
+             )
         },
         content = {
             BreedsList(
                 paddingValues = it,
-                items = state.breeds,
+                items = if (state.isSearchMode) state.filteredBreeds else state.breeds,
                 onItemClick = onItemClick
             )
 
@@ -92,26 +115,34 @@ fun BreedsListScreen(
                     }
 
                     false -> {
-                        if (state.error != null) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                val errorMessage = when (state.error) {
-                                    is BreedsListState.ListError.ListUpdateFailed ->
-                                        "Failed to load. Error message: ${state.error.cause?.message}."
-                                }
-                                Text(text = errorMessage)
-                            }
-                        } else {
+//                        if (state.error != null) {
+//                            Box(
+//                                modifier = Modifier.fillMaxSize(),
+//                                contentAlignment = Alignment.Center,
+//                            ) {
+//                                val errorMessage = when (state.error) {
+//                                    is BreedsListState.ListError.ListUpdateFailed ->
+//                                        "Failed to load. Error message: ${state.error.cause?.message}."
+//                                }
+//                                Text(text = errorMessage)
+//                            }
+//                        } else {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(text = "No breeds.")
                             }
-                        }
+//                        }
                     }
+                }
+            }
+            if(state.isSearchMode && state.filteredBreeds.isEmpty()){
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(text = "No breeds with that name.")
                 }
             }
         }
@@ -177,7 +208,7 @@ private fun BreedsListItem(
                     .padding(horizontal = 16.dp)
                     .padding(bottom = 16.dp)
                     .weight(weight = 1f),
-                text = data.description.take(250),
+                text = data.description.take(250).plus("..."),
             )
 
             Text(
@@ -203,6 +234,7 @@ fun PreviewBreedsListScreen() {
     CatalistTheme {
         BreedsListScreen(
             state = BreedsListState(breeds = SampleData),
+            eventPublisher = {},
             onItemClick = {}
         )
     }
