@@ -84,7 +84,7 @@ fun BreedsListScreen(
                 CenterAlignedTopAppBar(
                     title = {
                         Text(
-                            text = "Cat Breeds List",
+                            text = "Cat Breeds",
                             style = TextStyle(
                                 fontSize = 27.sp,
                                 fontWeight = FontWeight.Bold
@@ -115,7 +115,9 @@ fun BreedsListScreen(
                             )
                         )
                     },
-                    onCloseClicked = { eventPublisher(BreedsListUiEvent.CloseSearchMode) }
+                    onCloseClicked = { eventPublisher(BreedsListUiEvent.CloseSearchMode) },
+                    query = state.query,
+                    activated = state.isSearchMode
                 )
             }
         },

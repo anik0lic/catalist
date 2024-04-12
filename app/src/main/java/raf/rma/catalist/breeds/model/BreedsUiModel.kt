@@ -15,4 +15,7 @@ data class BreedsUiModel (
 
     val adaptability: Int,
     val affectionLevel: Int,
+    val intelligence: Int,
+    val socialNeeds: Int,
+    val childFriendly: Int
 )

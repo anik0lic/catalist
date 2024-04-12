@@ -16,7 +16,10 @@ val SampleData = listOf(
         rare = 1,
         adaptability = 1,
         affectionLevel = 2,
-        referenceImageId = "dsafasdf"
+        referenceImageId = "dsafasdf",
+        socialNeeds = 3,
+        childFriendly = 5,
+        intelligence = 5
     ),
     BreedsUiModel(
         id="2",
@@ -31,7 +34,10 @@ val SampleData = listOf(
         rare = 1,
         adaptability = 1,
         affectionLevel = 2,
-        referenceImageId = "dsafasdf"
+        referenceImageId = "dsafasdf",
+        socialNeeds = 3,
+        childFriendly = 5,
+        intelligence = 5
     ),
     BreedsUiModel(
         id="3",
@@ -44,9 +50,12 @@ val SampleData = listOf(
         weight = "10",
         wikipediaURL = "http://wikipedia.com",
         rare = 1,
+        referenceImageId = "dsafasdf",
         adaptability = 1,
         affectionLevel = 2,
-        referenceImageId = "dsafasdf"
+        socialNeeds = 3,
+        childFriendly = 5,
+        intelligence = 5
     ),
     BreedsUiModel(
         id="4",
@@ -61,6 +70,9 @@ val SampleData = listOf(
         rare = 1,
         adaptability = 1,
         affectionLevel = 2,
-        referenceImageId = "dsafasdf"
+        referenceImageId = "dsafasdf",
+        socialNeeds = 3,
+        childFriendly = 5,
+        intelligence = 5
     )
 )

@@ -18,6 +18,9 @@ data class BreedsApiModel(
 
     val adaptability: Int,
     @SerialName("affection_level") val affectionLevel: Int,
+    val intelligence: Int,
+    @SerialName("child_friendly") val childFriendly: Int,
+    @SerialName("social_needs") val socialNeeds: Int,
 
     @SerialName("reference_image_id") val referenceImageId: String = ""
 )

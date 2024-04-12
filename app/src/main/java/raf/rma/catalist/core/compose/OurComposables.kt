@@ -1,9 +1,15 @@
 package raf.rma.catalist.core.compose
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -21,14 +27,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import raf.rma.catalist.core.theme.CatalistTheme
 import raf.rma.catalist.core.theme.Orange
 
@@ -52,10 +63,12 @@ fun AppIconButton(
 fun SearchBar(
     modifier: Modifier = Modifier,
     onQueryChange: (String) -> Unit,
-    onCloseClicked: () -> Unit
+    onCloseClicked: () -> Unit,
+    query: String,
+    activated: Boolean
 ) {
-    var text by remember { mutableStateOf("") }
-    var active by remember { mutableStateOf(false) }
+    var text by remember { mutableStateOf(query) }
+    var active by remember { mutableStateOf(activated) }
     val focusManager = LocalFocusManager.current
 
     TextField(
@@ -103,4 +116,47 @@ fun SearchBar(
             focusedIndicatorColor = Orange,
         ),
     )
+}
+
+@Composable
+fun DetailsWidget(
+    number: Int,
+    trait: String
+){
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .size(80.dp)
+                .border(4.dp, Orange, CircleShape)
+                .padding(1.dp)
+                .clip(CircleShape)
+                .background(Color.White)
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .align(Alignment.Center),
+//                style = MaterialTheme.typography.bodyLarge,
+                text = number.toString(),
+                style = TextStyle(
+                    fontSize = 35.sp,
+//                    color = Orange
+                )
+            )
+        }
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 3.dp),
+//            .align(Alignment.Center),
+//                style = MaterialTheme.typography.bodyLarge,
+            text = trait,
+            style = TextStyle(
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+            )
+        )
+    }
 }

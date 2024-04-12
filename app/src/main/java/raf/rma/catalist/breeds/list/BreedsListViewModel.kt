@@ -114,14 +114,19 @@ class BreedsListViewModel (
         name = this.name,
         description = this.description,
         alternativeName = this.alternativeName,
-        adaptability = this.adaptability,
-        affectionLevel = this.affectionLevel,
         lifeSpan = this.lifeSpan,
         origin = this.origin,
         rare = this.rare,
         temperament = this.temperament,
         weight = this.weight.metric,
         wikipediaURL = this.wikipediaURL,
-        referenceImageId = this.referenceImageId
+
+        referenceImageId = this.referenceImageId,
+
+        adaptability = this.adaptability,
+        affectionLevel = this.affectionLevel,
+        intelligence = this.intelligence,
+        socialNeeds = this.socialNeeds,
+        childFriendly = this.childFriendly
     )
 }
