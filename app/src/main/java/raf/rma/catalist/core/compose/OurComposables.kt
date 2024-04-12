@@ -129,7 +129,7 @@ fun DetailsWidget(
     ) {
         Box(
             modifier = Modifier
-                .size(80.dp)
+                .size(70.dp)
                 .border(4.dp, Orange, CircleShape)
                 .padding(1.dp)
                 .clip(CircleShape)
@@ -142,7 +142,7 @@ fun DetailsWidget(
 //                style = MaterialTheme.typography.bodyLarge,
                 text = number.toString(),
                 style = TextStyle(
-                    fontSize = 35.sp,
+                    fontSize = 30.sp,
 //                    color = Orange
                 )
             )

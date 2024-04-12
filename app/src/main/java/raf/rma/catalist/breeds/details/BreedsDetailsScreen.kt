@@ -1,5 +1,9 @@
 package raf.rma.catalist.breeds.details
 
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,9 +24,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.Surface
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -78,10 +81,6 @@ fun NavGraphBuilder.breedsDetails(
         state = state.value,
         onClose = {
             navController.navigateUp()
-        },
-        onLink = {
-            navController.navigate(it)
-//            navController.navigate(it)
         }
     )
 }
@@ -90,8 +89,7 @@ fun NavGraphBuilder.breedsDetails(
 @Composable
 fun BreedsDetailsScreen(
     state: BreedsDetailsState,
-    onClose: () -> Unit,
-    onLink: (String) -> Unit,
+    onClose: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -142,8 +140,7 @@ fun BreedsDetailsScreen(
                     state.image?.let {
                         BreedsDataColumn(
                             data = state.data,
-                            image = it,
-                            onLink = {link -> onLink(link)}
+                            image = it
                         )
                     }
                 } else {
@@ -157,15 +154,13 @@ fun BreedsDetailsScreen(
 @Composable
 private fun BreedsDataColumn(
     data: BreedsUiModel,
-    image: ImageUiModel,
-    onLink: (String) -> Unit
+    image: ImageUiModel
 ) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
             .verticalScroll(scrollState),
     ) {
-//        Spacer(modifier = Modifier.height(16.dp))
         SubcomposeAsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
@@ -179,18 +174,15 @@ private fun BreedsDataColumn(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
-//            style = MaterialTheme.typography.headlineSmall,
             text = "Description",
             style = TextStyle(
                 fontSize = 21.sp,
                 fontWeight = FontWeight.Bold
             )
         )
-//        Divider(thickness = 1.dp, color = Orange)
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
-//            style = MaterialTheme.typography.headlineSmall,
             text = data.description,
             style = TextStyle(
                 fontSize = 18.sp,
@@ -202,38 +194,48 @@ private fun BreedsDataColumn(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
             text = "Origin: " + data.origin,
+            style = TextStyle(
+                fontSize = 18.sp
+            )
         )
 
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
+            style = TextStyle(
+                fontSize = 18.sp
+            ),
             text = "Temperament: " + data.temperament,
         )
 
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
+            style = TextStyle(
+                fontSize = 18.sp
+            ),
             text = "Life Span: " + data.lifeSpan,
         )
 
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
+            style = TextStyle(
+                fontSize = 18.sp
+            ),
             text = "Weight(Metrics): " + data.weight,
         )
 
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
+            style = TextStyle(
+                fontSize = 18.sp
+            ),
             text = if (data.rare == 1) "Rare Breed" else "Not Rare Breed",
         )
 
         Spacer(modifier = Modifier.height(8.dp))
         Divider(thickness = 1.dp, color = Orange)
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
         Row(
             Modifier.fillMaxSize(),
@@ -270,26 +272,30 @@ private fun BreedsDataColumn(
         }
 
         Spacer(modifier = Modifier.height(25.dp))
+        val openWikipedia = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
+        }
         FilledIconButton(
             onClick = {
-                onLink(data.wikipediaURL)
-//                window.open(url, "_blank")
+                val wikipediaUrl = data.wikipediaURL
+                if (wikipediaUrl.isNotEmpty()) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(wikipediaUrl))
+                    openWikipedia.launch(intent)
+                }
             },
             modifier = Modifier
-//                .fillMaxSize()
                 .height(55.dp)
-                .width(300.dp)
+                .width(250.dp)
                 .align(Alignment.CenterHorizontally),
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = Orange,
-                contentColor = Color.White
+                contentColor = Color.White,
             )
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 style = TextStyle(
-                    fontSize = 24.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 2.sp,
                 ),
@@ -300,7 +306,7 @@ private fun BreedsDataColumn(
     }
 }
 
-@Preview(heightDp = 1550)
+@Preview(heightDp = 1100)
 @Composable
 fun PreviewDetailsScreen() {
     Surface {
@@ -330,8 +336,7 @@ fun PreviewDetailsScreen() {
                     url = "https://cdn.thedogapi.com/images/Hylo4Snaf.jpeg"
                 )
             ),
-            onClose = {},
-            onLink = {}
+            onClose = {}
         )
     }
 }
