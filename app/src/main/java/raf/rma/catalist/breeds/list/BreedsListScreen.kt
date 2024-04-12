@@ -129,7 +129,7 @@ fun BreedsListScreen(
             )
 
             if (state.breeds.isEmpty()) {
-                when (state.fetching) {
+                when (state.loading) {
                     true -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
@@ -140,34 +140,41 @@ fun BreedsListScreen(
                     }
 
                     false -> {
-//                        if (state.error != null) {
-//                            Box(
-//                                modifier = Modifier.fillMaxSize(),
-//                                contentAlignment = Alignment.Center,
-//                            ) {
-//                                val errorMessage = when (state.error) {
-//                                    is BreedsListState.ListError.ListUpdateFailed ->
-//                                        "Failed to load. Error message: ${state.error.cause?.message}."
-//                                }
-//                                Text(text = errorMessage)
-//                            }
-//                        } else {
+                        if (state.error) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Text(text = "Something went wrong while fetching the data")
+                            }
+                        } else {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(text = "No breeds.")
                             }
-//                        }
+                        }
                     }
                 }
             }
             if(state.isSearchMode && state.filteredBreeds.isEmpty()){
+                if (!state.loading) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(text = "No breeds with that name.")
+                    }
+                }
+            }
+
+            if(state.loading){
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Text(text = "No breeds with that name.")
+                    CircularProgressIndicator()
                 }
             }
         }

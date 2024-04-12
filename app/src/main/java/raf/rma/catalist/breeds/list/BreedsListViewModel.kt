@@ -38,16 +38,17 @@ class BreedsListViewModel (
 
     private fun fetchAllBreeds(){
         viewModelScope.launch {
-            setState { copy(fetching = true) }
+            setState { copy(loading = true) }
             try {
                 val breeds = withContext(Dispatchers.IO) {
                     repository.getAllBreeds().map { it.asBreedsUiModel() }
                 }
                 setState { copy(breeds = breeds) }
             } catch (error: IOException) {
-//                setState { copy(error = BreedsListContract.BreedsListState.ListError.ListUpdateFailed(cause = error)) }
+//                setState { copy(error = BreedsListUiEvent.ListUpdateFailed(cause = error)) }
+                setState { copy(error = true) }
             } finally {
-                setState { copy(fetching = false) }
+                setState { copy(loading = false) }
             }
         }
     }
@@ -56,7 +57,6 @@ class BreedsListViewModel (
         viewModelScope.launch {
             events.collect {
                 when (it) {
-//                    BreedsListUiEvent.ClearSearch -> Unit
                     BreedsListUiEvent.CloseSearchMode -> setState { copy(isSearchMode = false) }
 
                     is BreedsListUiEvent.SearchQueryChanged -> {
@@ -64,17 +64,13 @@ class BreedsListViewModel (
                         println(it.query)
                         setState { copy(query = it.query) }
                         setState { copy(isSearchMode = true) }
+                        setState { copy(loading = true) }
                         // onValueChange from OutlinedTextField is called for every character
 
                         // We should handle the query text state update here, but make the api call
                         // or any other expensive call somewhere else where we debounce the text changes
-                        it.query // this should be added to state
+//                        it.query // this should be added to state
                     }
-//
-//                    BreedsListUiEvent.Dummy -> Unit
-//                    is BreedsListUiEvent.RemoveUser -> {
-//                        BreedsListUiEvent(breedId = it.breedId)
-//                    }
                 }
             }
         }
@@ -87,24 +83,11 @@ class BreedsListViewModel (
                 .filterIsInstance<BreedsListUiEvent.SearchQueryChanged>()
                 .debounce(1.seconds)
                 .collect {
-                    println("observe search query")
-                    // Called only when search query was changed
-                    // and once 2 seconds have passed after the last char
-//                    val filtered = state.value.breeds.filter { item ->
-//                        item.name.contains(query, ignoreCase = true)
-//                    }
-
                     setState { copy(filteredBreeds = state.value.breeds.filter { item ->
                         item.name.contains(state.value.query, ignoreCase = true)
                     }) }
-                    // This is helpful to avoid trigger expensive calls
-                    // on every character change
-                    //s
-                    //si
-                    //sib
-                    //sibi
-                    //sibir
-                    //sibirs
+
+                    setState { copy(loading = false) }
                 }
         }
     }

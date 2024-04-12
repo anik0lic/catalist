@@ -40,7 +40,7 @@ class BreedsDetailsViewModel (
 
     private fun fetchBreedDetails(){
         viewModelScope.launch {
-            setState { copy(fetching = true) }
+            setState { copy(loading = true) }
             try {
                 val data = withContext(Dispatchers.IO) {
                     repository.getBreedDetails(breedId = breedId).asBreedsUiModel()
@@ -49,11 +49,12 @@ class BreedsDetailsViewModel (
                 setState { copy(data = data) }
                 fetchImage(data.referenceImageId)
             } catch (error: IOException) {
-                setState {
-                    copy(error = BreedsDetailsState.DetailsError.DataUpdateFailed(cause = error))
-                }
+//                setState {
+//                    copy(error = BreedsDetailsState.DetailsError.DataUpdateFailed(cause = error))
+//                }
+                setState { copy(error = true) }
             } finally {
-                setState { copy(fetching = false) }
+                setState { copy(loading = false) }
             }
         }
     }
@@ -69,6 +70,7 @@ class BreedsDetailsViewModel (
 //                setState {
 //                    copy(error = BreedsDetailsState.DetailsError.DataUpdateFailed(cause = error))
 //                }
+                setState { copy(error = true) }
                 //error
             }
         }
