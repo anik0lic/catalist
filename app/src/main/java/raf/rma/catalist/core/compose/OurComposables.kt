@@ -5,8 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -15,7 +13,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -37,10 +34,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import raf.rma.catalist.core.theme.CatalistTheme
 import raf.rma.catalist.core.theme.Orange
 
 @Composable
@@ -139,19 +134,15 @@ fun DetailsWidget(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .align(Alignment.Center),
-//                style = MaterialTheme.typography.bodyLarge,
                 text = number.toString(),
                 style = TextStyle(
                     fontSize = 30.sp,
-//                    color = Orange
                 )
             )
         }
         Text(
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 3.dp),
-//            .align(Alignment.Center),
-//                style = MaterialTheme.typography.bodyLarge,
             text = trait,
             style = TextStyle(
                 fontSize = 18.sp,

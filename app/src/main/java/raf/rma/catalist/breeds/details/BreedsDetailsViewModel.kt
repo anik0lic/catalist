@@ -26,14 +26,6 @@ class BreedsDetailsViewModel (
     private fun setState(reducer: BreedsDetailsState.() -> BreedsDetailsState) =
         _state.getAndUpdate(reducer)
 
-
-//    private val events = MutableSharedFlow<PasswordDetailsUiEvent>()
-//    fun setEvent(event: PasswordDetailsUiEvent) {
-//        viewModelScope.launch {
-//            events.emit(event)
-//        }
-//    }
-
     init {
         fetchBreedDetails()
     }
@@ -49,9 +41,6 @@ class BreedsDetailsViewModel (
                 setState { copy(data = data) }
                 fetchImage(data.referenceImageId)
             } catch (error: IOException) {
-//                setState {
-//                    copy(error = BreedsDetailsState.DetailsError.DataUpdateFailed(cause = error))
-//                }
                 setState { copy(error = true) }
             } finally {
                 setState { copy(loading = false) }
@@ -67,11 +56,7 @@ class BreedsDetailsViewModel (
                 }
                 setState { copy( image = image) }
             } catch (error: IOException) {
-//                setState {
-//                    copy(error = BreedsDetailsState.DetailsError.DataUpdateFailed(cause = error))
-//                }
                 setState { copy(error = true) }
-                //error
             }
         }
     }

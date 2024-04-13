@@ -45,7 +45,6 @@ class BreedsListViewModel (
                 }
                 setState { copy(breeds = breeds) }
             } catch (error: IOException) {
-//                setState { copy(error = BreedsListUiEvent.ListUpdateFailed(cause = error)) }
                 setState { copy(error = true) }
             } finally {
                 setState { copy(loading = false) }
@@ -65,11 +64,6 @@ class BreedsListViewModel (
                         setState { copy(query = it.query) }
                         setState { copy(isSearchMode = true) }
                         setState { copy(loading = true) }
-                        // onValueChange from OutlinedTextField is called for every character
-
-                        // We should handle the query text state update here, but make the api call
-                        // or any other expensive call somewhere else where we debounce the text changes
-//                        it.query // this should be added to state
                     }
                 }
             }

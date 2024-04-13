@@ -11,14 +11,8 @@ interface BreedsListContract {
         val isSearchMode: Boolean = false,
         val filteredBreeds: List<BreedsUiModel> = emptyList()
     )
-    {
-//        sealed class ListError {
-//            data class ListUpdateFailed(val cause: Throwable? = null) : ListError()
-//        }
-    }
     sealed class BreedsListUiEvent{
         data class SearchQueryChanged(val query: String) : BreedsListUiEvent()
         data object CloseSearchMode : BreedsListUiEvent()
-//        data class ListUpdateFailed(val cause: Throwable? = null) : BreedsListUiEvent()
     }
 }

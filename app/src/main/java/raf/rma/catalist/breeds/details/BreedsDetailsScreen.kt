@@ -64,13 +64,10 @@ fun NavGraphBuilder.breedsDetails(
     val dataId = navBackStackEntry.arguments?.getString("id")
         ?: throw IllegalArgumentException("id is required")
 
-    // We have to provide factory class to instantiate our view model
-    // since it has a custom property in constructor
     val breedsDetailsViewModel = viewModel<BreedsDetailsViewModel>(
         factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                // We pass the passwordId which we read from arguments above
                 return BreedsDetailsViewModel(breedId = dataId) as T
             }
         },

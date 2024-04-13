@@ -248,7 +248,6 @@ private fun BreedsListItem(
                 text = data.description.take(250).plus("..."),
                 style = TextStyle(
                     fontSize = 18.sp,
-//                    fontWeight = FontWeight.Bold
                 )
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -261,12 +260,6 @@ private fun BreedsListItem(
                 )
             )
         }
-//        Icon(
-////                modifier = Modifier
-////                    .align(Alignment.CenterVertically),
-//            imageVector = Icons.Default.KeyboardArrowRight,
-//            contentDescription = null,
-//        )
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
